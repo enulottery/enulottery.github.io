@@ -17,8 +17,8 @@
 
 <body>
     <div class="container header">
-        <h1>1000000 ENU</h1>
-        <p>Play to Win the Jackpot!</p>
+        <h1><span id="pot">-</span> ENU</h1>
+        <p><span id="timeLeft">Loading Game Info...</span></p>
     </div>
     <div class="container content">
         <div class="row">
@@ -36,6 +36,15 @@
                     <button class="btn btn-default" onclick="purchaseTickets()">Make the Purchase</button>
                 </div>
             </div>
+            <div class="col-sm-4 gameInfo">
+                <h3>Game Info</h3>
+                <h5>Current round (<strong id="currentId">#</strong>):</h5>
+                <p>Random Seed Block: <strong id="currentRandom"></strong></p>
+                <h5>Last round (<strong id="lastId">#</strong>):</h5>
+                <p>End Time: <strong id="lastEndTime"></strong></p>
+                <p>Random Seed Block: <strong id="lastRandom"></strong></p>
+                <p>Lucky Number: <strong id="lastResult"></strong></p>
+            </div>
             <div class="col-sm-4">
                 <h3>Rules</h3>
                 <p>Players can buy lottery tickets for a slot from
@@ -46,14 +55,6 @@
                 <p>If there's at least one winner, the winners split
                     <strong>80%</strong> of the pot based on how many tickets they have on the winning number.
                 </p>
-            </div>
-            <div class="col-sm-4">
-                <h3>Transparency</h3>
-                <p>The contract and webpage source code is available on
-                    <a href="https://github.com/enulottery" target="_blank">GitHub</a>
-                </p>
-                <p>The developer has given up any control on the contract. There's
-                    <strong>NO</strong> risk of unfair behavior.</p>
             </div>
         </div>
         <div class="row">

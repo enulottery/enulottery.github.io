@@ -25,6 +25,15 @@ body {
     margin-bottom: 1.2rem;
 }
 
+.gameInfo h5 {
+    text-align: center;
+    margin: 1rem auto;
+}
+
+.gameInfo p {
+    margin: 0 auto;
+}
+
 .footer {
     padding-top: 2.5rem;
     padding-bottom: 2.5rem;

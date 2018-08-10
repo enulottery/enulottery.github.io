@@ -1,11 +1,66 @@
 let myIronman;
+let utcRoundEnd;
+
+var network = {
+    blockchain: 'enu',
+    host: 'rpc.enu.one',
+    port: 443,
+    protocol: 'https',
+    chainId: 'cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f'
+};
 
 async function init() {
 
+    var enu = Enu({
+        httpEndpoint: "https://api.enumivo.com",
+        chainId: network.chainId,
+        keyProvider: null
+    });
+
+    const gameInfo = (await enu.getTableRows(true, "enulotteries", "enulotteries", "info")).rows[0];
+    let lastInfo = (await enu.getTableRows(true, "enulotteries", "enulotteries", "lastinfo")).rows[0];
+
+    let currentPot = gameInfo.pot;
+    currentPot /= 1000;
+    currentPot = currentPot.toFixed(2);
+
+    document.getElementById("currentId").innerHTML = "#" + gameInfo.round_id;
+    document.getElementById("pot").innerHTML = currentPot;
+    document.getElementById("currentRandom").innerHTML = gameInfo.random_block;
+
+    let roundEnd = new Date(gameInfo.round_end);
+    utcRoundEnd = Math.round((roundEnd.getTime() - roundEnd.getTimezoneOffset() * 60 * 1000) / 1000);
+
+    const utcNow = Math.round(new Date().getTime() / 1000);
+
+    if (utcRoundEnd < utcNow) {
+
+        // Round ended
+        if (gameInfo.has_result) {
+            document.getElementById("timeLeft").innerHTML = "Round ended. The lucky number is: " + gameInfo.round_result;
+        } else {
+            document.getElementById("timeLeft").innerHTML = "Round ended. Waiting for the result";
+        }
+    } else {
+        // Game round live
+        setTimeout(refreshTimer, 0);
+    }
+
+    if (lastInfo.round_id > 0) {
+        document.getElementById("lastId").innerHTML = "#" + lastInfo.round_id;
+        document.getElementById("lastEndTime").innerHTML = lastInfo.round_end;
+        document.getElementById("lastRandom").innerHTML = lastInfo.random_block;
+        document.getElementById("lastResult").innerHTML = lastInfo.round_result;
+    }
+
+    initIronman();
 }
 
 function initIronman() {
-
+    if (!myIronman) {
+        myIronman = window.ironman;
+        window.ironman = null;
+    }
 }
 
 function purchaseTickets() {
@@ -44,11 +99,6 @@ function purchaseTickets() {
 
 function doPurchase(slot, size) {
 
-    if (!myIronman) {
-        myIronman = window.ironman;
-        window.ironman = null;
-    }
-
     if (myIronman) {
         // Buy with Ironman
     } else {
@@ -59,22 +109,9 @@ function doPurchase(slot, size) {
 async function voteForMe() {
 
     if (!myIronman) {
-        myIronman = window.ironman;
-        window.ironman = null;
-    }
-
-    if (!myIronman) {
         alert("Please install ironman to vote for me");
         return;
     }
-
-    const network = {
-        blockchain: 'enu',
-        host: 'rpc.enu.one',
-        port: 443,
-        protocol: 'https',
-        chainId: 'cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f'
-    };
 
     var enu = Enu({
         httpEndpoint: "https://api.enumivo.com",
@@ -118,4 +155,24 @@ async function voteForMe() {
     const sysContract = await ironEnu.contract('enumivo');
 
     await sysContract.voteproducer(userName, "", producersVoted, { authorization: userName + "@" + authority });
+}
+
+function refreshTimer() {
+
+    const utcNow = Math.round(new Date().getTime() / 1000);
+
+    let totalSeconds = utcRoundEnd - utcNow;
+    const seconds = totalSeconds - Math.floor(totalSeconds / 60) * 60;
+    totalSeconds -= seconds;
+    const minutes = (totalSeconds - Math.floor(totalSeconds / 3600) * 3600) / 60;
+    totalSeconds -= minutes * 60;
+    const hours = totalSeconds / 3600;
+
+    const timeStr = ("00" + hours.toString()).slice(-2) + ":" +
+        ("00" + minutes.toString()).slice(-2) + ":" +
+        ("00" + seconds.toString()).slice(-2);
+
+    document.getElementById("timeLeft").innerHTML = "Round ends in " + timeStr;
+
+    setTimeout(refreshTimer, 1000);
 }
