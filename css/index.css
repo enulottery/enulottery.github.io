@@ -1,0 +1,32 @@
+body {
+    background-color: #444;
+}
+
+.header {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+    color: white;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 4rem;
+}
+
+.header p {
+    font-size: 1.5rem;
+}
+
+.content {
+    color: white;
+}
+
+.purchaseForm {
+    margin-bottom: 1.2rem;
+}
+
+.footer {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+    text-align: center;
+}

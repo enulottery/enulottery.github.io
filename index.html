@@ -3,12 +3,69 @@
 
 <head>
     <title>ENU Lottery</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <script src="js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="css/index.css">
+    <script src="js/index.js"></script>
+    <script src="js/enu/enu.js"></script>
 </head>
 
 <body>
-    <h1>ENU Lottery Coming Soon</h1>
+    <div class="container header">
+        <h1>1000000 ENU</h1>
+        <p>Play to Win the Jackpot!</p>
+    </div>
+    <div class="container content">
+        <div class="row">
+            <div class="col-sm-4">
+                <h3>Buy Tickets Now</h3>
+                <div class="purchaseForm">
+                    <div class="form-group">
+                        <label for="slot">Slot (1-10000):</label>
+                        <input type="number" class="form-control" id="slot">
+                    </div>
+                    <div class="form-group">
+                        <label for="size">No. of Tickets:</label>
+                        <input type="number" class="form-control" id="size">
+                    </div>
+                    <button class="btn btn-default" onclick="purchaseTickets()">Make the Purchase</button>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <h3>Rules</h3>
+                <p>Players can buy lottery tickets for a slot from
+                    <strong>1 - 10000</strong> during the game round. Each ticket costs
+                    <strong>10 ENU</strong> to buy.</p>
+                <p>Each game round ends at 00:00 UTC. A random number is generated
+                    <strong>on-chain</strong> to draw the result.</p>
+                <p>If there's at least one winner, the winners split
+                    <strong>80%</strong> of the pot based on how many tickets they have on the winning number.
+                </p>
+            </div>
+            <div class="col-sm-4">
+                <h3>Transparency</h3>
+                <p>The contract and webpage source code is available on
+                    <a href="https://github.com/enulottery" target="_blank">GitHub</a>
+                </p>
+                <p>The developer has given up any control on the contract. There's
+                    <strong>NO</strong> risk of unfair behavior.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 footer">
+                <h4>Support Me on Enumivo</h4>
+                <p>This game was built by
+                    <a href="http://enumivo.qsx.io/accounts/xjonathanlei" target="_blank">xjonathanlei</a>. Vote for me as a block producer so that I can build more fun dApps like this for Enumivo!</p>
+                <button class="btn btn-default" onclick="voteForMe()">Vote for Me Now</button>
+            </div>
+        </div>
+    </div>
+    <script>init();</script>
 </body>
 
 </html>
