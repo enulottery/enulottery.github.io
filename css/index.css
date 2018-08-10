@@ -34,8 +34,16 @@ body {
     margin: 0 auto;
 }
 
+.gameInfo .infoForm {
+    margin-bottom: 1.2rem;
+}
+
 .footer {
     padding-top: 2.5rem;
     padding-bottom: 2.5rem;
     text-align: center;
+}
+
+.mobileTPInfo {
+    font-style: italic;
 }

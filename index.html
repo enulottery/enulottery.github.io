@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <script src="js/bootstrap.min.js"></script>
 
     <link rel="stylesheet" href="css/index.css">
     <script src="js/index.js"></script>
@@ -17,8 +16,11 @@
 
 <body>
     <div class="container header">
-        <h1><span id="pot">-</span> ENU</h1>
-        <p><span id="timeLeft">Loading Game Info...</span></p>
+        <h1>
+            <span id="pot">-</span> ENU</h1>
+        <p>
+            <span id="timeLeft">Loading Game Info...</span>
+        </p>
     </div>
     <div class="container content">
         <div class="row">
@@ -30,20 +32,32 @@
                         <input type="number" class="form-control" id="slot">
                     </div>
                     <div class="form-group">
-                        <label for="size">No. of Tickets:</label>
+                        <label for="size">No. of Tickets (10 ENU each):</label>
                         <input type="number" class="form-control" id="size">
                     </div>
-                    <button class="btn btn-default" onclick="purchaseTickets()">Make the Purchase</button>
+                    <button class="btn btn-primary" onclick="purchaseTickets()">Make the Purchase</button>
                 </div>
             </div>
             <div class="col-sm-4 gameInfo">
                 <h3>Game Info</h3>
-                <h5>Current round (<strong id="currentId">#</strong>):</h5>
-                <p>Random Seed Block: <strong id="currentRandom"></strong></p>
-                <h5>Last round (<strong id="lastId">#</strong>):</h5>
-                <p>End Time: <strong id="lastEndTime"></strong></p>
-                <p>Random Seed Block: <strong id="lastRandom"></strong></p>
-                <p>Lucky Number: <strong id="lastResult"></strong></p>
+                <div class="infoForm">
+                    <h5>Current round (
+                        <strong id="currentId">#</strong>):</h5>
+                    <p>Random Seed Block:
+                        <strong id="currentRandom"></strong>
+                    </p>
+                    <h5>Last round (
+                        <strong id="lastId">#</strong>):</h5>
+                    <p>End Time:
+                        <strong id="lastEndTime"></strong>
+                    </p>
+                    <p>Random Seed Block:
+                        <strong id="lastRandom"></strong>
+                    </p>
+                    <p>Lucky Number:
+                        <strong id="lastResult"></strong>
+                    </p>
+                </div>
             </div>
             <div class="col-sm-4">
                 <h3>Rules</h3>
@@ -62,11 +76,80 @@
                 <h4>Support Me on Enumivo</h4>
                 <p>This game was built by
                     <a href="http://enumivo.qsx.io/accounts/xjonathanlei" target="_blank">xjonathanlei</a>. Vote for me as a block producer so that I can build more fun dApps like this for Enumivo!</p>
-                <button class="btn btn-default" onclick="voteForMe()">Vote for Me Now</button>
+                <button class="btn btn-primary" onclick="voteForMe()">Vote for Me Now</button>
             </div>
         </div>
     </div>
     <script>init();</script>
+
+    <!-- Modal -->
+
+    <div class="modal fade" id="pcGuideModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Ironman Not Installed</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Ironman is not installed on this PC.</p>
+                    <p>To buy lottery tickets, follow one of the ways:</p>
+                    <ul>
+                        <li>
+                            <span>Follow
+                                <a href="https://enumivo.com/topic/641-ironman-a-light-and-secure-browser-based-onchain-wallet-for-enu/" target="_blank">this guide</a> to install and set-up Ironman. Then refresh the lottery page.</span>
+                        </li>
+                        <li>
+                            <span>Install
+                                <a href="https://www.mytokenpocket.vip" target="_blank">Token Pocket</a> on your phone if you haven't done so. Then, send
+                                <strong id="pcAmount"></strong> to the contract
+                                <strong>enulotteries</strong> with memo set to
+                                <strong id="pcMemo"></strong>.
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="mobileGuideModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Purchase on Phone</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="mobileTPInfo">[Token Pocket native support coming soon]</p>
+                    <p>To buy lottery tickets, use a mobile wallet to make a token transfer.</p>
+                    <p>
+                        <span>Install the recommended wallet
+                            <a href="https://www.mytokenpocket.vip" target="_blank">Token Pocket</a> on your phone if you haven't done so. Then, send
+                            <strong id="mobileAmount"></strong> to the contract
+                            <strong>enulotteries</strong> with memo set to
+                            <strong id="mobileMemo"></strong>.
+                        </span>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/jquery-3.2.1.slim.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
 </body>
 
 </html>
