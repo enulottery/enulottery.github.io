@@ -3,7 +3,8 @@ let utcRoundEnd;
 
 const price = 100000;
 const GAME_CONTRACT = "enulotteries";
-const NODE_URL = "https://rpc.enu.one"
+const NODE_URL = "https://rpc.enu.one";
+const HISTORY_URL = "https://api.enumivo.com";
 
 var network = {
     blockchain: 'enu',
@@ -62,7 +63,71 @@ async function init() {
         document.getElementById("lastResult").innerHTML = lastInfo.round_result;
     }
 
+    loadRecents();
+
     initIronman();
+}
+
+async function loadRecents() {
+
+    var enu = Enu({
+        httpEndpoint: HISTORY_URL,
+        chainId: network.chainId,
+        keyProvider: null
+    });
+
+    const recentActions = (await enu.getActions(GAME_CONTRACT, -1, -40)).actions;
+
+    let recentPurchases = new Array();
+
+    for (let i = recentActions.length - 1; i >= 0; i--) {
+        const currentAction = recentActions[i];
+        if (currentAction.action_trace.act.name == "newround")
+            break;
+
+        if (currentAction.action_trace.act.name != "transfer")
+            continue;
+
+        if (currentAction.action_trace.act.data.to != GAME_CONTRACT)
+            continue;
+
+        if (currentAction.action_trace.receipt.receiver != GAME_CONTRACT)
+            continue;
+
+        // Real record
+        const currentBuyer = currentAction.action_trace.act.data.from;
+        const currentSlot = Number(currentAction.action_trace.act.data.memo);
+
+        let currentSize = currentAction.action_trace.act.data.quantity;
+        currentSize = currentSize.substr(0, currentSize.indexOf(" "));
+        currentSize = Number(currentSize) * 10000 / price;
+        currentSize = Math.round(currentSize);
+
+        recentPurchases.push({ buyer: currentBuyer, slot: currentSlot, size: currentSize });
+    }
+
+    // Render recent purchases to table
+
+    document.getElementById("recentIntro").innerHTML = "The last 10 purchases in this round:";
+
+    for (let i = 0; i < recentPurchases.length; i++) {
+
+        let currentRow = document.createElement("tr");
+
+        let colBuyer = document.createElement("th");
+        let colSlot = document.createElement("td");
+        let colSize = document.createElement("td");
+
+        colBuyer.innerHTML = recentPurchases[i].buyer;
+        colSlot.innerHTML = recentPurchases[i].slot;
+        colSize.innerHTML = recentPurchases[i].size;
+
+        currentRow.appendChild(colBuyer);
+        currentRow.appendChild(colSlot);
+        currentRow.appendChild(colSize);
+
+        document.getElementById("recentTbody").appendChild(currentRow);
+    }
 }
 
 function initIronman() {
